@@ -1,22 +1,35 @@
-//Serving Static Files
+// Sessions in ExpressJS
 
-
-const express = require("express");
-const path = require("path");
-
-
-
+const { response } = require('express')
+const express = require('express')
+const session = require('express-session')
 const app = express()
-const publicpath = path.resolve(__dirname, 'public')
+
+const PORT = process.env.PORT || 3000
 
 
-const port = 3000
+app.use(session({
+    secret:"Your Secret Key",
+    resave: true,
+    saveUninitialized: true
+}))
+
+app.get('/', (req,res)=>{
+    req.session.name = "John"
+    return res.send("Session Set")
+})
+app.get('/session', (req,res)=>{
+    var name = req.session.name
+    return res.send(name)
+})
 
 
-app.use(express.static('public'));
-app.use(express.static('images'));
-app.use(express.static('files'));
-app.use( publicpath, express.static('static'));
 
-app.get('/', (req, res) => res.send('Static Files!'))
-app.listen(port, () => console.log(`Example app listening on port port!`))
+
+
+
+
+
+app.listen(PORT, ()=>{
+    console.log(`Listening to requests on https://localhost:${PORT}`);
+})
