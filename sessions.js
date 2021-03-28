@@ -20,7 +20,15 @@ app.get('/', (req,res)=>{
 })
 app.get('/session', (req,res)=>{
     var name = req.session.name
+    console.log(req.session)
     return res.send(name)
+})
+
+app.get('/destroy', (req,res)=>{
+    req.session.destroy(function(error){
+        console.log("Session Destroyed")
+    })
+    res.end();
 })
 
 
